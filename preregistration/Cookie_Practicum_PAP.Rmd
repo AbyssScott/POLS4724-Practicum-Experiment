@@ -1,0 +1,258 @@
+---
+title: "Pre-Analysis Plan: Effects of Pre-Baking Warming on Cookie Diameter"
+author: "Xiang Lian"
+date: "2026-11-13"
+output: html_document
+---
+
+**Official preregistration:** [AsPredicted #324567](https://aspredicted.org/8b3y59.pdf), approved November 13, 2026. This supplemental RMarkdown documents the pre-specified design and code; the AsPredicted record is the authoritative registration.
+
+## Research question and hypothesis
+
+Does allowing commercially refrigerated, pre-portioned sugar-cookie dough to warm at room temperature for the last 90 minutes before baking change the final cookie diameter, relative to keeping the dough refrigerated until baking? The primary hypothesis is **two-sided**: the mean outcomes under the two conditions differ. No direction is presupposed.
+
+## Experimental units and setting
+
+Thirty-two individual pieces of the same commercially refrigerated original-flavor dough will be selected before treatment from two packages of the same product. Each individual cookie serves as the experimental unit, the unit of randomization, and the unit of analysis. The prior 16-cookie oven pilot is a separate test and its observations are not included in the confirmatory N=32 analysis. Two batches will be baked in a home oven (two racks, eight cookies per rack). These units are a convenience sample, not representative of all recipes or ovens.
+
+## Treatment and procedure
+
+Each batch has a three-hour experimental window:
+
+- **Treatment (T, continued refrigeration):** dough stays refrigerated for all 180 minutes immediately before baking.
+- **Control (C, warming):** dough remains refrigerated for the first 90 minutes and is left at room temperature for the final 90 minutes before baking.
+
+Both groups in a batch will go into the oven together. The second batch remains refrigerated until its own 180-minute window begins. For both batches, the planned bake settings are **350°F for 17 minutes**, based on the earlier pilot; two trays are baked simultaneously. Record the actual baking time and any deviation. Each tray is arranged as **two columns × four rows**, with positions numbered 1–2 at the back and 7–8 at the front; position 1 is back-left. The eight positions per tray are randomly assigned in the frozen table. Maintain approximately 4–5 cm separation between dough pieces initially. Do not change baking time based on treatment assignment.
+
+**Cooling protocol (fixed before the experiment):** After removing a baking tray from the oven, leave its cookies on the tray for **5 minutes**, timed from removal. After five minutes of cooling on the baking tray, begin measuring the cookies using the same measurement procedure for both conditions, batches, and racks. Record actual cooling durations and describe any deviations; do not modify timing based on the observed cookie sizes.
+
+## Random assignment
+
+There are four **Batch × Rack** blocks (morning/afternoon × upper/lower), each containing eight cookies. Within each block exactly four units are randomized to T and four to C; the eight tray positions are independently randomized. These are **blocks, not clusters**. The pseudo-random allocation uses a fixed seed, 472416, and is archived in `data/random_assignment.csv`. No package-level blocking is planned. For practical balance, select 16 pieces from each package and distribute eight from each package to each baking batch; package is not a planned analysis variable. The numbered pieces are assigned according to the frozen CSV, without appearance-based swaps. Before treatment, verify 4T and 4C on each rack. Compliance is following each assigned cold/warming interval; actual removal and oven-entry times will be recorded.
+
+## Outcome
+
+After **5 minutes of cooling on the baking tray**, measure two perpendicular widths **across the bottom** of each baked cookie with a ruler to the nearest 0.1 cm. For cookie $i$, let $D_{i1}$ and $D_{i2}$ denote these two measurements (cm). The primary outcome is their average:
+
+$$
+Y_i = \frac{D_{i1}+D_{i2}}{2} \quad \text{(cm)}.
+$$
+
+Measure all cookies using the same protocol; no pre-bake size covariate adjustment is planned.
+
+## Outliers, missing data, and assumptions
+
+All 32 randomly assigned cookies will be retained in the dataset, and all reliably measured outcomes will be included in the analysis, regardless of cookie diameter. There is no outlier-based deletion or winsorization. If a cookie cannot be measured reliably because of damage or another measurement issue, record the missing outcome and why, and do not replace it; report any deviation from the planned complete-data analysis. Space the dough pieces apart to minimize contact or merging during baking. Noninterference is plausible but not guaranteed if adjacent cookies change the local baking environment. Equal handling, random position assignment, and within-rack balance help reduce differential heating and measurement problems. The treatment is experimentally assigned to each unit, so observational confounding is not the main concern.
+
+## Primary estimand and analysis
+
+Let $Y_i(1)$ be cookie $i$'s diameter under continued refrigeration and $Y_i(0)$ under 90-minute warming. The sample ATE is the average of $Y_i(1)-Y_i(0)$ across the 32 cookies. For each of the four equally sized blocks $b$, calculate the treatment-minus-control difference in means. The **blocked difference-in-means** estimate is
+
+$$
+\widehat{\tau}_{\mathrm{blocked}} = \sum_{b=1}^{4}\frac{8}{32}
+\left(\overline{Y}_{T,b}-\overline{Y}_{C,b}\right).
+$$
+
+Because the blocks have equal sizes and treatment proportions, this equals the pooled treatment-minus-control mean difference in this design. The conservative Neyman blocked variance estimator is
+
+$$
+\widehat{V}_{\mathrm{Neyman}}\!\left(\widehat{\tau}_{\mathrm{blocked}}\right)
+= \sum_{b=1}^{4} \left(\frac{8}{32}\right)^2
+\left(\frac{s_{T,b}^{2}}{4}+\frac{s_{C,b}^{2}}{4}\right).
+$$
+
+The reported standard error is the square root of this variance estimate. The two-sided **normal-approximation 95% confidence interval** is
+
+$$
+\widehat{\tau}_{\mathrm{blocked}} \;\pm\;
+1.96 \sqrt{\widehat{V}_{\mathrm{Neyman}}\!\left(\widehat{\tau}_{\mathrm{blocked}}\right)}.
+$$
+
+This is an approximate interval for a small sample; it does **not** assume individual cookie diameters are normally distributed. Test the **sharp null of no effect on any cookie** using a two-sided Fisher randomization test based on the same blocked statistic, with **10,000 within-block Monte Carlo reassignments** that always preserve 4T/4C per block. Statistical significance is assessed at 0.05. The direction of all estimates is **continued refrigeration minus warming**. No regression model, subgroup analysis, covariate adjustment, or outcome-dependent trimming is preregistered.
+
+## Code: independently reproduce the frozen random assignment
+
+```{r randomization, eval=FALSE}
+# Fixed, auditable random assignment: 4 batch-by-rack blocks, 4T/4C each.
+# A deterministic Lehmer PRNG is used so the archived CSV can be exactly
+# reproduced in either R or Python. Do not re-run to choose a nicer layout.
+state <- 472416
+next_index <- function(n) {
+  state <<- (state * 16807) %% 2147483647
+  as.integer(state %% n) + 1L
+}
+shuffle_fixed <- function(x) {
+  if (length(x) > 1L) {
+    for (i in seq.int(length(x), 2L, by = -1L)) {
+      j <- next_index(i)
+      temp <- x[i]
+      x[i] <- x[j]
+      x[j] <- temp
+    }
+  }
+  x
+}
+
+block_list <- list()
+k <- 0L
+for (batch in 1:2) {
+  for (rack in c("Upper", "Lower")) {
+    ids <- seq.int(k + 1L, k + 8L)
+    z <- shuffle_fixed(c(rep("T", 4L), rep("C", 4L)))
+    pos <- shuffle_fixed(1:8)
+    block_list[[length(block_list) + 1L]] <- data.frame(
+      cookie_id = sprintf("%02d", ids),
+      batch = batch,
+      rack = rack,
+      position = pos,
+      row_from_back = (pos + 1L) %/% 2L,
+      column = ifelse(pos %% 2L == 1L, "Left", "Right"),
+      assignment = z,
+      stringsAsFactors = FALSE
+    )
+    k <- k + 8L
+  }
+}
+assignment <- do.call(rbind, block_list)
+stopifnot(nrow(assignment) == 32L)
+stopifnot(all(table(assignment$batch, assignment$rack,
+                    assignment$assignment) == 4L))
+stopifnot(all(vapply(split(assignment, interaction(assignment$batch,
+                     assignment$rack)), function(b) {
+  identical(sort(b$position), 1:8)
+}, logical(1))))
+
+# From the repository root, run: Rscript code/randomization.R
+# The original assignment file is frozen and must NOT be overwritten.
+data_file <- if (file.exists("../data/random_assignment.csv")) {
+  "../data/random_assignment.csv"
+} else {
+  "data/random_assignment.csv"
+}
+archive <- read.csv(data_file, colClasses = c(cookie_id = "character"),
+                    stringsAsFactors = FALSE)
+for (nm in names(assignment)) {
+  stopifnot(identical(as.character(assignment[[nm]]),
+                      as.character(archive[[nm]])))
+}
+cat("Verified: frozen random assignment matches seed 472416.\n")
+print(assignment[order(assignment$batch, assignment$rack,
+                       assignment$position), ])
+```
+
+
+## Code: planned transformation, inference, and figures
+
+The data file is a template until the baking experiment is completed. This chunk is not evaluated when knitting the PAP before data collection.
+
+```{r analysis, eval=FALSE}
+# This file must be run AFTER all 32 cookie widths have been recorded.
+# From repository root: Rscript code/analysis.R
+# Primary outcome: mean of two perpendicular bottom-face widths in cm.
+data_file <- if (file.exists("../data/measurement_template.csv")) {
+  "../data/measurement_template.csv"
+} else {
+  "data/measurement_template.csv"
+}
+dat <- read.csv(data_file, colClasses = c(cookie_id = "character"),
+                stringsAsFactors = FALSE)
+stopifnot(nrow(dat) == 32L, all(dat$assignment %in% c("T", "C")))
+stopifnot(all(table(dat$batch, dat$rack, dat$assignment) == 4L))
+dat$Y <- (as.numeric(dat$width1_cm) + as.numeric(dat$width2_cm)) / 2
+if (anyNA(dat$Y)) {
+  stop("Some outcomes are missing. Document deviations before analysis; ",
+       "the preregistered complete-data estimator cannot be applied unchanged.")
+}
+dat$block <- interaction(dat$batch, dat$rack, drop = TRUE)
+blocks <- split(dat, dat$block)
+within_block <- function(d) {
+  yt <- d$Y[d$assignment == "T"]
+  yc <- d$Y[d$assignment == "C"]
+  c(n = nrow(d), tau = mean(yt) - mean(yc),
+    variance = var(yt) / length(yt) + var(yc) / length(yc))
+}
+block_stats <- t(vapply(blocks, within_block, numeric(3)))
+w <- block_stats[, "n"] / sum(block_stats[, "n"])
+tau_hat <- sum(w * block_stats[, "tau"])
+se_hat <- sqrt(sum(w^2 * block_stats[, "variance"]))
+ci95 <- tau_hat + c(-1, 1) * qnorm(0.975) * se_hat
+cat(sprintf("ATE (continued refrigeration minus warming): %.4f cm\n",
+            tau_hat))
+cat(sprintf("Neyman blocked SE: %.4f cm\n", se_hat))
+cat(sprintf("Normal-approx. 95%% CI: [%.4f, %.4f] cm\n",
+            ci95[1], ci95[2]))
+cat("Treatment and control mean widths (cm):\n")
+print(tapply(dat$Y, dat$assignment, mean))
+
+# Two-sided sharp-null randomization inference, respecting each block.
+set.seed(472417)
+B <- 10000L
+indices <- split(seq_len(nrow(dat)), dat$block)
+ri_estimates <- replicate(B, {
+  perm_z <- dat$assignment
+  for (idx in indices) {
+    perm_z[idx] <- sample(c(rep("T", 4L), rep("C", 4L)))
+  }
+  sum(vapply(seq_along(indices), function(i) {
+    idx <- indices[[i]]
+    w[i] * (mean(dat$Y[idx][perm_z[idx] == "T"]) -
+            mean(dat$Y[idx][perm_z[idx] == "C"]))
+  }, numeric(1)))
+})
+ri_p <- (1 + sum(abs(ri_estimates) >= abs(tau_hat))) / (B + 1)
+cat(sprintf("Two-sided blocked sharp-null RI p-value: %.5f\n", ri_p))
+
+# Save two figures for the practicum report; no extra statistical tests.
+# Paths work when launched from either the repository root or code/.
+plot_dir <- if (file.exists("../data/measurement_template.csv")) {
+  "../result"
+} else {
+  "result"
+}
+dir.create(plot_dir, showWarnings = FALSE, recursive = TRUE)
+
+# Figure 1: Fisher sharp-null randomization distribution.
+png(file.path(plot_dir, "randomization_inference.png"),
+    width = 1000, height = 650, res = 120)
+hist(ri_estimates, breaks = 35, col = "grey80", border = "white",
+     main = "Blocked randomization inference under the sharp null",
+     xlab = "Simulated treatment-minus-control estimate (cm)")
+abline(v = tau_hat, lwd = 2, col = "firebrick")
+abline(v = -tau_hat, lwd = 2, col = "firebrick", lty = 2)
+legend("topright", legend = c("Observed estimate", "Opposite-tail cutoff"),
+       col = "firebrick", lty = c(1, 2), lwd = 2, bty = "n")
+dev.off()
+
+# Figure 2: Coppock-style individual outcomes and group means.
+# The displayed 95% intervals describe each group mean; the formal
+# preregistered inference for the blocked ATE is reported above.
+groups <- c("C", "T")
+values <- lapply(groups, function(z) dat$Y[dat$assignment == z])
+group_means <- vapply(values, mean, numeric(1))
+group_ses <- vapply(values, function(x) sd(x) / sqrt(length(x)), numeric(1))
+lo <- group_means - qnorm(0.975) * group_ses
+hi <- group_means + qnorm(0.975) * group_ses
+ylim <- range(c(unlist(values), lo, hi))
+pad <- max(0.05, diff(ylim) * 0.12)
+png(file.path(plot_dir, "cookie_outcomes.png"),
+    width = 900, height = 650, res = 120)
+plot(1:2, group_means, type = "n", xlim = c(0.5, 2.5),
+     ylim = ylim + c(-pad, pad), xaxt = "n", xlab = "",
+     ylab = "Baked cookie diameter (cm)",
+     main = "Individual cookie diameters and group means")
+axis(1, at = 1:2, labels = c("Control: warming", "Treatment: chilled"))
+set.seed(472418)  # Jitter only; does not affect any estimates.
+for (j in 1:2) {
+  points(j + runif(length(values[[j]]), -0.13, 0.13), values[[j]],
+         pch = 16, col = grDevices::adjustcolor("grey30", alpha.f = 0.45))
+}
+segments(1:2, lo, 1:2, hi, lwd = 2)
+segments((1:2) - 0.06, lo, (1:2) + 0.06, lo, lwd = 2)
+segments((1:2) - 0.06, hi, (1:2) + 0.06, hi, lwd = 2)
+points(1:2, group_means, pch = 18, cex = 1.8)
+mtext("Diamonds: group means; bars: approximate 95% CIs for group means",
+      side = 1, line = 3, cex = 0.75)
+dev.off()
+cat("Saved figures in: ", plot_dir, "\n", sep = "")
+```
+
