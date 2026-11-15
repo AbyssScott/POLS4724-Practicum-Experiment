@@ -47,6 +47,6 @@ The analysis reports the blocked difference-in-means estimate, Neyman conservati
 
 ## Status
 
-The confirmatory 32-cookie experiment and outcome measurements were completed on November 14, 2026. Preregistration and random assignment were completed before the confirmatory experiment. The prior 16-cookie pilot is excluded from the formal analysis.
+The confirmatory 32-cookie experiment and outcome measurements were completed on November 14, 2026.
 
 **Post-experiment file maintenance (November 14, 2026):** The completed dataset was renamed from `measurement_template.csv` to `cookie_measurements.csv`. Only corresponding file-path references were updated in the R scripts and the supplemental RMarkdown PAP; the preregistered estimand, statistical methods, random assignment, and measurement data were not changed. The original preregistration remains available in AsPredicted and the GitHub commit history.
