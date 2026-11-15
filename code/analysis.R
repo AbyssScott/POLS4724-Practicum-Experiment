@@ -1,10 +1,10 @@
 # This file must be run AFTER all 32 cookie widths have been recorded.
 # From repository root: Rscript code/analysis.R
 # Primary outcome: mean of two perpendicular bottom-face widths in cm.
-data_file <- if (file.exists("../data/measurement_template.csv")) {
-  "../data/measurement_template.csv"
+data_file <- if (file.exists("../data/cookie_measurements.csv")) {
+  "../data/cookie_measurements.csv"
 } else {
-  "data/measurement_template.csv"
+  "data/cookie_measurements.csv"
 }
 dat <- read.csv(data_file, colClasses = c(cookie_id = "character"),
                 stringsAsFactors = FALSE)
@@ -56,7 +56,7 @@ cat(sprintf("Two-sided blocked sharp-null RI p-value: %.5f\n", ri_p))
 
 # Save two figures for the practicum report; no extra statistical tests.
 # Paths work when launched from either the repository root or code/.
-plot_dir <- if (file.exists("../data/measurement_template.csv")) {
+plot_dir <- if (file.exists("../data/cookie_measurements.csv")) {
   "../result"
 } else {
   "result"
