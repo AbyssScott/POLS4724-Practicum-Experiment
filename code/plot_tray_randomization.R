@@ -104,8 +104,8 @@ p <- ggplot2::ggplot(
     plot.caption = ggplot2::element_text(size = 9, hjust = 0)
   )
 
-# Write a NEW output filename so the previously uploaded figure is preserved.
-output_path <- file.path(root, "result", "tray_randomization_layout_R.png")
+# Save the tray diagram using the filename expected by the final report.
+output_path <- file.path(root, "result", "tray_randomization_layout.png")
 dir.create(dirname(output_path), recursive = TRUE, showWarnings = FALSE)
 ggplot2::ggsave(output_path, plot = p, width = 10.5, height = 8,
                 units = "in", dpi = 300, bg = "white")
