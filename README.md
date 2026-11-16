@@ -47,7 +47,7 @@ The preregistered blocked difference-in-means estimator gives:
 | Blocked ATE (T − C) | +0.0156 cm (approximately 0.16 mm) |
 | Conservative Neyman SE | 0.0309 cm |
 | Normal-approximation 95% CI | [−0.0449, 0.0762] cm |
-| Two-sided Fisher randomization-inference p-value | 0.552 |
+| Two-sided Fisher randomization-inference p-value | 0.690 |
 | Total observations | 32 |
 
 The estimated difference is small and statistically uncertain. The results do not provide evidence of a nonzero average effect at the 5% level, but they do not establish that the true effect is exactly zero.
