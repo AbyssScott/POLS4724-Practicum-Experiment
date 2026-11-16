@@ -55,29 +55,29 @@ if (length(missing_files) > 0L) {
 
 ## 1.1 Motivation
 
-Previous baking tests suggest that chilling homemade cookie dough reduces spreading. Hamel (2015) observed this pattern with chocolate-chip dough, and Cho and Liang (2021) found smaller diameters after longer chilling. In contrast, commercial ready-to-bake dough is manufactured and refrigerated before purchase, so its response to pre-baking warming may differ. Whether the earlier findings generalize to such products remains unclear. This experiment therefore examines whether continued refrigeration, relative to pre-baking warming, affects the final diameter of commercially prepared cookies.
+Previous baking tests suggest that chilling homemade cookie dough reduces spreading. Hamel (2015) observed less spreading in chilled chocolate-chip dough, while Cho and Liang (2021) found that longer chilling resulted in smaller cookie diameters. However, it remains unclear whether these findings apply to commercially prepared, ready-to-bake dough, which is typically sold refrigerated. This experiment therefore examines whether keeping commercial cookie dough refrigerated until baking, rather than allowing it to warm at room temperature beforehand, affects the diameter of the baked cookies.
 
 ## 1.2 Hypothesis
 
-**H1 (two-sided):** Mean baked diameter differs between commercially refrigerated dough kept chilled until baking and dough allowed to warm at room temperature beforehand.
+**H1 (two-sided):** Mean baked cookie diameter differs between dough kept refrigerated until baking and dough allowed to warm at room temperature beforehand.
 
 # 2. Experimental Design
 
-The experiment used 32 pieces of Pillsbury Ready to Bake Sugar Cookie Dough from two packages. Each cookie was the unit of randomization and analysis. On November 14, 2026, two batches of 16 cookies were baked, with eight per oven rack.
+The experiment used 32 pre-portioned pieces of Pillsbury Ready to Bake Sugar Cookie Dough from two packages. Each cookie served as both the unit of randomization and the unit of analysis. On November 14, 2026, the cookies were baked in two batches of 16, with eight cookies on each oven rack.
 
-Random assignment was blocked by batch and rack because baking conditions might differ across batches and rack levels. By comparing cookies under similar conditions, blocking was intended to improve the precision of the estimated treatment effect. Each of the four blocks contained four treatment and four control cookies. Tray positions were also randomized to reduce systematic differences in heat exposure (see Appendix A).
+Random assignment was blocked by baking batch and oven rack to account for potential differences in baking conditions. Each of the four blocks contained four treatment and four control cookies, allowing comparisons within similar baking environments and potentially improving the precision of the estimated treatment effect. Positions within each tray were also randomized to reduce systematic differences in heat exposure (see Appendix A).
 
-Treatment cookies (T) remained refrigerated for 180 minutes. Control cookies (C) were refrigerated for 90 minutes, then warmed at room temperature for 90 minutes. Both conditions entered the oven together within each batch and baked at 350°F for 17 minutes. After five minutes of cooling on the baking trays, two perpendicular bottom-face diameters were measured to the nearest 0.1 cm. Their average was the preregistered outcome.
+Treatment cookies (T) remained refrigerated for 180 minutes, while control cookies (C) were refrigerated for 90 minutes before being left at room temperature for another 90 minutes. Within each batch, both groups were baked simultaneously at 350°F for 17 minutes. After cooling on the baking trays for five minutes, two perpendicular diameters were measured across the bottom of each cookie to the nearest 0.1 cm. The average of these two measurements served as the preregistered outcome.
 
 # 3. Core Assumptions
 
-The design sought to satisfy three core assumptions. Random assignment followed a frozen within-block allocation determined independently of the cookies' potential outcomes. Non-interference requires that each cookie's potential outcome depend only on its own treatment assignment. Cookies were spaced apart and none merged, reducing the possibility of direct interference. Excludability requires that treatment assignment affect outcomes only through receipt of the assigned temperature treatment. Identical baking, cooling, and measurement procedures supported this assumption. Although measurements were not blinded, I applied the same measurement procedure to both groups; measurement bias nevertheless remains possible. All 32 cookies complied with their assignments and yielded valid outcome measurements, with neither noncompliance nor attrition.
+The design sought to satisfy three core assumptions. First, random assignment followed a predetermined within-block allocation, independent of the cookies' potential outcomes. Second, non-interference was supported by spacing cookies apart during baking, preventing them from merging and reducing the likelihood that one cookie's spreading would affect another's diameter. Third, excludability was supported by applying identical baking, cooling, and measurement procedures across treatment conditions, reducing the possibility that assignment would affect outcomes through pathways other than the intended temperature treatment.
 
 # 4. Results
 
 ## 4.1 Descriptive Statistics
 
-Mean diameter was 5.8781 cm for treatment and 5.8625 cm for control, a negligible difference. Figure 1 shows individual outcomes and group means, with substantial overlap between the two distributions. Treatment outcomes were somewhat more dispersed (SD = 0.1064 cm) than control outcomes (SD = 0.0742 cm).
+The mean baked cookie diameter was 5.8781 cm in the treatment group and 5.8625 cm in the control group, indicating a very small difference. As shown in Figure 1, the two groups' outcome distributions largely overlap, although the treatment group exhibited slightly greater variation (SD = 0.1064 cm) than the control group (SD = 0.0742 cm).
 
 \begin{figure}[H]
 \centering
@@ -87,7 +87,7 @@ Mean diameter was 5.8781 cm for treatment and 5.8625 cm for control, a negligibl
 
 ## 4.2 Statistical Inference
 
-The preregistered estimand was the sample average treatment effect (ATE) of continued refrigeration relative to pre-baking warming. We estimated it using a blocked difference-in-means estimator, weighting each within-block treatment-minus-control difference by the block's share of the sample:
+The preregistered estimand was the sample average treatment effect (ATE) of continued refrigeration relative to pre-baking warming. I estimated it using a blocked difference-in-means estimator, weighting each block's treatment-minus-control difference by its share of the total sample:
 
 $$
 \widehat{\mathrm{ATE}}_{\mathrm{blocked}}
@@ -95,13 +95,13 @@ $$
 \left(\bar{Y}_{Tb}-\bar{Y}_{Cb}\right).
 $$
 
-Equal block sizes and treatment proportions made this estimate identical to the pooled difference in means.
+Because all four blocks had equal sizes and treatment proportions, the blocked estimate was identical to the pooled difference in means.
 
-Table 1 reports an estimated ATE of +0.0156 cm (0.16 mm): chilled cookies were marginally wider on average. The estimated conservative Neyman standard error (0.0309 cm) measures the sampling variability of the estimator across hypothetical random assignments and is about twice the point estimate. Thus, the observed difference is small relative to its statistical uncertainty.
+Table 1 reports an estimated ATE of +0.0156 cm (approximately 0.16 mm), indicating that refrigerated cookies were slightly wider on average. The conservative Neyman standard error was 0.0309 cm, reflecting the estimated variability of the blocked estimator across hypothetical random assignments. Since the standard error is nearly twice the magnitude of the estimated effect, the observed difference is small relative to its statistical uncertainty.
 
 \Needspace{9\baselineskip}
 
-The normal-approximation 95% confidence interval [−0.0449, 0.0762] cm includes zero and is compatible with a small decrease or increase in diameter. Under hypothetical repeated random assignments, intervals constructed using this procedure would cover the true sample ATE approximately 95% of the time. We therefore cannot reject a zero average effect at the 5% level, but this does not establish that the true effect is exactly zero.
+The normal-approximation 95% confidence interval [−0.0449, 0.0762] cm includes zero, indicating that the data are compatible with either a small negative or positive treatment effect. Across hypothetical repeated random assignments, approximately 95% of confidence intervals constructed using this procedure would contain the true sample ATE. Since the interval includes zero, we cannot reject a zero average treatment effect at the 5% significance level.
 
 \Needspace{13\baselineskip}
 
@@ -117,7 +117,7 @@ Control mean (C; $n = 16$) & 5.8625 cm \\
 Blocked ATE (T $-$ C) & +0.0156 cm \\
 Conservative Neyman SE & 0.0309 cm \\
 Normal-approximation 95\% CI & [$-0.0449$, 0.0762] cm \\
-Two-sided Fisher RI $p$-value & 0.552 \\
+Two-sided Fisher RI $p$-value & 0.690 \\
 Total observations & 32 \\
 \bottomrule
 \end{tabular}
@@ -129,7 +129,7 @@ $$
 H_0^{\mathrm{sharp}}:\quad Y_i(1)=Y_i(0),\quad \forall i.
 $$
 
-Under the null hypothesis, 10,000 simulated random assignments preserved four treatment and four control cookies per block. Approximately 55.2% yielded estimated treatment effects at least as large in absolute value as the observed estimate (p = 0.552). Therefore, the observed estimate is not unusual under the sharp null, and we fail to reject it at the 5% level. Figure 2 displays the estimated ATE and its confidence interval; Appendix Figure A1 shows the randomization distribution.
+Under this null hypothesis, I simulated 10,000 random reassignments, preserving four treatment and four control cookies within each block. The resulting p-value was 0.690, indicating that approximately 69.0% of simulated assignments produced absolute treatment-effect estimates at least as large as the observed estimate. Thus, the observed difference was not unusual under the sharp null, which we fail to reject at the 5% significance level. Figure 2 presents the estimated ATE and its confidence interval, while Appendix Figure A1 shows the randomization distribution.
 
 \begin{figure}[H]
 \centering
@@ -141,9 +141,9 @@ Under the null hypothesis, 10,000 simulated random assignments preserved four tr
 
 # 5. Discussion and Conclusion
 
-The slightly positive estimate runs opposite to the reduced spreading reported for chilled homemade dough, but the difference is too small and statistically uncertain to establish a contrary finding. Both groups started with previously refrigerated dough, potentially limiting the contrast, although this mechanism was not directly tested.
+The estimated effect was slightly positive, in contrast to the reduced spreading associated with chilling in previous studies of homemade dough. However, the difference was too small and statistically uncertain to establish a contradictory finding. One possible explanation is that both groups began with refrigerated dough, which may have limited the contrast between treatment conditions, although this possibility was not directly tested.
 
-The small sample size limits statistical precision, while the use of a single brand limits generalizability. Future experiments could include larger samples and multiple brands, using similar blocking to investigate treatment-effect heterogeneity.
+The small sample size limits statistical precision, while the use of a single brand restricts generalizability. Future experiments could improve on this design by including larger samples and multiple brands, while retaining blocked randomization to examine whether treatment effects vary across products.
 
 # References
 
@@ -479,7 +479,9 @@ ri_estimates <- replicate(B, {
             mean(dat$Y[idx][perm_z[idx] == "C"]))
   }, numeric(1)))
 })
-ri_p <- (1 + sum(abs(ri_estimates) >= abs(tau_hat))) / (B + 1)
+# Include boundary ties despite floating-point rounding.
+tol <- 1e-10
+ri_p <- (1 + sum(abs(ri_estimates) >= abs(tau_hat) - tol)) / (B + 1)
 cat(sprintf("Two-sided blocked sharp-null RI p-value: %.5f\n", ri_p))
 
 # Save two figures for the practicum report; no extra statistical tests.

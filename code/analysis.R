@@ -51,7 +51,9 @@ ri_estimates <- replicate(B, {
             mean(dat$Y[idx][perm_z[idx] == "C"]))
   }, numeric(1)))
 })
-ri_p <- (1 + sum(abs(ri_estimates) >= abs(tau_hat))) / (B + 1)
+# Include boundary ties despite floating-point rounding.
+tol <- 1e-10
+ri_p <- (1 + sum(abs(ri_estimates) >= abs(tau_hat) - tol)) / (B + 1)
 cat(sprintf("Two-sided blocked sharp-null RI p-value: %.5f\n", ri_p))
 
 # Save two figures for the practicum report; no extra statistical tests.
