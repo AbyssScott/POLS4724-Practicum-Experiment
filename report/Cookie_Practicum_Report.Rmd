@@ -216,7 +216,7 @@ The following tables reproduce **all 32 records** in the archived CSV files. For
 
 ### Appendix C1. Frozen Random Assignment
 
-Every cookie's batch, rack, position, row, column, and frozen treatment assignment is retained below. **T** denotes continued refrigeration; **C** denotes pre-baking warming.
+For each cookie, the table records its batch, rack, position, row, column, and fixed treatment assignment. **T** denotes continued refrigeration; **C** denotes pre-baking warming.
 
 \begingroup
 \small
@@ -263,7 +263,7 @@ Every cookie's batch, rack, position, row, column, and frozen treatment assignme
 
 ### Appendix C2. Individual Outcome Measurements
 
-Both original bottom-face diameter measurements (cm) and their arithmetic mean are shown for every cookie; the latter is the preregistered outcome.
+For each cookie, the table reports the two measured bottom-face diameters (cm) and their arithmetic mean, which is the preregistered outcome.
 
 \begingroup
 \small
@@ -310,7 +310,7 @@ Both original bottom-face diameter measurements (cm) and their arithmetic mean a
 
 ### Appendix C3. Timing and Deviation Records
 
-All times below refer to **November 14, 2026** (HH:MM, local time). “Room start” is blank for treatment cookies because they were never warmed at room temperature. An em dash in the notes column represents the original blank field; all observations were valid.
+All times below refer to **November 14, 2026** (HH:MM, local time). An em dash (—) in the “Room start” column indicates that the cookie was assigned to continued refrigeration and was not warmed at room temperature. In the “Notes” column, the dash represents an empty field in the original CSV. All 32 observations yielded valid outcome measurements.
 
 | Cookie ID | Oven entry | Room start | Bake (min) | Cool (min) | Notes |
 | :---: | :---: | :---: | :---: | :---: | :---: |
@@ -351,7 +351,7 @@ All times below refer to **November 14, 2026** (HH:MM, local time). “Room star
 
 ## Appendix D. Complete R Programs
 
-The following blocks reproduce the complete source programs for frozen randomization verification, the preregistered analysis, and both additional figures. These are **source-code listings for reproducibility**, not analyses rerun during knitting. They retain the original code, indentation, and comments.
+The following blocks reproduce the complete source programs for verifying the fixed random assignment, conducting the preregistered analysis, and generating the two additional figures. These are **source-code listings for reproducibility**, not analyses rerun during knitting. They retain the original code, indentation, and comments.
 
 ### Appendix D1. Randomization Verification (`code/randomization.R`)
 
